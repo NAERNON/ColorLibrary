@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57C45C0E2A3F65E1004F257F /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C45C0C2A3F65E0004F257F /* String+Extension.swift */; };
+		57C45C0F2A3F65E1004F257F /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C45C0D2A3F65E0004F257F /* CGFloat+Extension.swift */; };
 		761DCD1F29F17052003B8704 /* ColorLibraryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761DCD1E29F17052003B8704 /* ColorLibraryApp.swift */; };
 		761DCD2129F17052003B8704 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761DCD2029F17052003B8704 /* ContentView.swift */; };
 		761DCD2329F17053003B8704 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 761DCD2229F17053003B8704 /* Assets.xcassets */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		57C45C0C2A3F65E0004F257F /* String+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		57C45C0D2A3F65E0004F257F /* CGFloat+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
 		761DCD1B29F17052003B8704 /* ColorLibrary.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ColorLibrary.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		761DCD1E29F17052003B8704 /* ColorLibraryApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorLibraryApp.swift; sourceTree = "<group>"; };
 		761DCD2029F17052003B8704 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -50,9 +54,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		57C45C0B2A3F65E0004F257F /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				57C45C0C2A3F65E0004F257F /* String+Extension.swift */,
+				57C45C0D2A3F65E0004F257F /* CGFloat+Extension.swift */,
+			);
+			name = Util;
+			path = ColorLibrary/Util;
+			sourceTree = "<group>";
+		};
 		761DCD1229F17052003B8704 = {
 			isa = PBXGroup;
 			children = (
+				57C45C0B2A3F65E0004F257F /* Util */,
 				761DCD1D29F17052003B8704 /* ColorLibrary */,
 				761DCD1C29F17052003B8704 /* Products */,
 			);
@@ -181,6 +196,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				76EEA76B29F1E6EB00F2E817 /* ColorDataBase.swift in Sources */,
+				57C45C0E2A3F65E1004F257F /* String+Extension.swift in Sources */,
+				57C45C0F2A3F65E1004F257F /* CGFloat+Extension.swift in Sources */,
 				761DCD3529F1753B003B8704 /* ColorInfoRow.swift in Sources */,
 				7625E57F2A08521200C6E861 /* FullScreenArrows.swift in Sources */,
 				761DCD3729F17EE2003B8704 /* ColorInfoView.swift in Sources */,

@@ -10,20 +10,47 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject private var colorDataBase: ColorDataBase
     @State private var newlyCreatedColor: ColorInfo?
+    @State var searchText: String = ""
     
     var body: some View {
         NavigationStack {
             List {
-                ForEach(colorDataBase.colors) { color in
+                ForEach(colorDataBase.displayedColors) { color in
                     NavigationLink(value: color) {
                         ColorInfoRow(color)
                     }
+                    .swipeActions(
+                        edge: .leading,
+                        allowsFullSwipe: false,
+                        content: {
+                            Button(
+                                role: .destructive,
+                                action: {
+                                    colorDataBase.delete(color)
+                                },
+                                label: {
+                                    Image(systemName: "trash")
+                                }
+                            )
+                        }
+                    )
                 }
             }
             .navigationTitle("Colors")
+
             .navigationDestination(for: ColorInfo.self) { color in
                 ColorInfoView(color)
             }
+            .searchable(
+                text: $searchText,
+                placement: .navigationBarDrawer(displayMode: .always)
+            )
+            .onChange(
+                of: searchText,
+                perform: { _ in
+                    colorDataBase.filter(searchText: searchText)
+                }
+            )
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {

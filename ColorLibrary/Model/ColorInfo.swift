@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class ColorInfo: Identifiable, Hashable, ObservableObject {
+final class ColorInfo: Identifiable, Hashable, Codable, ObservableObject {
     @Published var title: String
     
     let id: UUID
@@ -25,7 +25,7 @@ final class ColorInfo: Identifiable, Hashable, ObservableObject {
     }
     
     static func == (lhs: ColorInfo, rhs: ColorInfo) -> Bool {
-        lhs.id == rhs.id &&
+        // lhs.id == rhs.id &&
         lhs.title == rhs.title &&
         lhs.red == rhs.red &&
         lhs.green == rhs.green &&
@@ -57,6 +57,49 @@ final class ColorInfo: Identifiable, Hashable, ObservableObject {
     
     func blue(_ value: CGFloat) -> ColorInfo {
         .init(title: title, red: red, green: green, blue: value)
+    }
+    
+    enum CodingKeys: String, CodingKey {
+            case id
+            case title
+            case red
+            case green
+            case blue
+        }
+    
+    // MARK: - Codable
+    
+    func encode(to encoder: Encoder) throws {
+            var container = encoder.container(keyedBy: CodingKeys.self)
+
+            try container.encode(id, forKey: .id)
+            try container.encode(title, forKey: .title)
+            try container.encode(red, forKey: .red)
+            try container.encode(green, forKey: .green)
+            try container.encode(blue, forKey: .blue)
+        }
+    
+    init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+
+            id = try values.decode(UUID.self, forKey: .id)
+            title = try values.decode(String.self, forKey: .title)
+            red = try values.decode(CGFloat.self, forKey: .red)
+            green = try values.decode(CGFloat.self, forKey: .green)
+            blue = try values.decode(CGFloat.self, forKey: .blue)
+        }
+}
+
+// MARK: - Formatted code
+
+extension ColorInfo {
+    
+    var swiftUI: String {
+        return "static let \(title.spacesToCamelCase) = Color(red: \(red.simplified), green: \(green.simplified), blue: \(blue.simplified))"
+    }
+    
+    var uiKit: String {
+        return "static let \(title.spacesToCamelCase) = UIColor(red: \(red.simplified), green: \(green.simplified), blue: \(blue.simplified), alpha: 1)"
     }
 }
 

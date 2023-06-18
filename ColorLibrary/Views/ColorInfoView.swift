@@ -42,6 +42,9 @@ struct ColorInfoView: View {
     @ObservedObject private(set) var info: ColorInfo
     @StateObject private var closeColorsLoader = CloseColorsLoader()
     @State private var isColorMainFocus = false
+    
+    @Environment(\.presentationMode) var presentationMode
+    
     let showsCloseColors: Bool
     
     init(_ info: ColorInfo, showsCloseColors: Bool = true) {
@@ -62,15 +65,25 @@ struct ColorInfoView: View {
                     .frame(maxWidth: 200)
             }
             
+            if ProcessInfo().isiOSAppOnMac {
+                clipBoardView
+            }
+            
             Spacer()
             
             slidersView
             
             Spacer()
-            
-            if showsCloseColors && !isColorMainFocus {
-                if !closeColorsLoader.colors.isEmpty {
-                    closeColorsView(closeColorsLoader.colors)
+            HStack (alignment: .bottom){
+                if showsCloseColors && !isColorMainFocus {
+                    if !closeColorsLoader.colors.isEmpty {
+                        closeColorsView(closeColorsLoader.colors)
+                    }
+                }
+                if ProcessInfo().isiOSAppOnMac {
+                    Spacer()
+                    deletionView
+                        .padding([.bottom, .trailing], 20)
                 }
             }
         }.onReceive(info.objectWillChange) {
@@ -93,6 +106,60 @@ struct ColorInfoView: View {
                 }
             }
         }
+    }
+    
+    private var deletionView: some View {
+        return Button.init(
+            role: .destructive,
+            action: {
+                presentationMode.wrappedValue.dismiss()
+                colorDataBase.delete(info)
+            },
+            label: {
+                Image(systemName: "trash")
+                    .imageScale(.large)
+            }
+        )
+    }
+    
+    private var clipBoardView: some View {
+        VStack {
+            HStack {
+                Text("SwiftUI:")
+                    .bold()
+                Button(
+                    action: {
+                        UIPasteboard.general.string = info.swiftUI
+                    },
+                    label: {
+                        Label(info.swiftUI, systemImage: "list.clipboard")
+                            .bold()
+                    }
+                )
+                .padding(5)
+                .overlay(RoundedRectangle(cornerRadius: 25)
+                    .stroke(Color.accentColor, lineWidth: 1)
+                )
+            }.padding(.vertical, 10)
+                HStack {
+                    Text("UIKit:")
+                        .bold()
+                    Button(
+                        action: {
+                            UIPasteboard.general.string = info.uiKit
+                        },
+                        label: {
+                            Label(info.uiKit, systemImage: "list.clipboard")
+                                .bold()
+                        }
+                    )
+                    .padding(5)
+                    .overlay(RoundedRectangle(cornerRadius: 25)
+                        .stroke(Color.accentColor, lineWidth: 1)
+                    )
+                }.padding(.vertical, 10)
+        }
+        .padding(.top, 30)
     }
     
     private var slidersView: some View {
@@ -150,7 +217,7 @@ struct ColorInfoView: View {
             }
             .frame(height: closeColorsViewHeight)
             .animation(.default, value: closeColors)
-        }
+        }.padding(.bottom, ProcessInfo().isiOSAppOnMac ? 30 : 0)
     }
 }
 
